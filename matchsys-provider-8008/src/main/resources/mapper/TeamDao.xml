@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.dao.TeamDao">
+
+    <resultMap type="cn.edu.lingnan.entity.Team" id="TeamMap">
+        <result property="teamName" column="team_name" jdbcType="VARCHAR"/>
+        <result property="teamPassword" column="team_password" jdbcType="VARCHAR"/>
+        <result property="teamEmail" column="team_email" jdbcType="VARCHAR"/>
+        <result property="teamPhone" column="team_phone" jdbcType="VARCHAR"/>
+        <result property="teamCaptain" column="team_captain" jdbcType="VARCHAR"/>
+        <result property="teamCount" column="team_count" jdbcType="INTEGER"/>
+        <result property="teamCoach" column="team_coach" jdbcType="VARCHAR"/>
+        <result property="teamRegDate" column="team_reg_date" jdbcType="TIMESTAMP"/>
+        <result property="teamLastLoginDate" column="team_last_login_date" jdbcType="TIMESTAMP"/>
+        <result property="teamWin" column="team_win" jdbcType="OTHER"/>
+        <result property="teamLose" column="team_lose" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TeamMap">
+        select
+          team_name, team_password, team_email, team_phone, team_captain, team_count, team_coach, team_reg_date, team_last_login_date, team_win, team_lose
+        from matchsys.team
+        where team_name = #{teamName}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TeamMap">
+        select
+          team_name, team_password, team_email, team_phone, team_captain, team_count, team_coach, team_reg_date, team_last_login_date, team_win, team_lose
+        from matchsys.team
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TeamMap">
+        select
+          team_name, team_password, team_email, team_phone, team_captain, team_count, team_coach, team_reg_date, team_last_login_date, team_win, team_lose
+        from matchsys.team
+        <where>
+            <if test="teamName != null and teamName != ''">
+                and team_name = #{teamName}
+            </if>
+            <if test="teamPassword != null and teamPassword != ''">
+                and team_password = #{teamPassword}
+            </if>
+            <if test="teamEmail != null and teamEmail != ''">
+                and team_email = #{teamEmail}
+            </if>
+            <if test="teamPhone != null and teamPhone != ''">
+                and team_phone = #{teamPhone}
+            </if>
+            <if test="teamCaptain != null and teamCaptain != ''">
+                and team_captain = #{teamCaptain}
+            </if>
+            <if test="teamCount != null">
+                and team_count = #{teamCount}
+            </if>
+            <if test="teamCoach != null and teamCoach != ''">
+                and team_coach = #{teamCoach}
+            </if>
+            <if test="teamRegDate != null">
+                and team_reg_date = #{teamRegDate}
+            </if>
+            <if test="teamLastLoginDate != null">
+                and team_last_login_date = #{teamLastLoginDate}
+            </if>
+            <if test="teamWin != null">
+                and team_win = #{teamWin}
+            </if>
+            <if test="teamLose != null">
+                and team_lose = #{teamLose}
+            </if>
+        </where>
+    </select>
+
+<!--&lt;!&ndash;    新增所有列&ndash;&gt;-->
+<!--    <insert id="insert" keyProperty="teamName" useGeneratedKeys="true">-->
+<!--        insert into matchsys.team(team_password, team_email, team_phone, team_captain, team_count, team_coach, team_reg_date, team_last_login_date, team_win, team_lose)-->
+<!--        values (#{teamPassword}, #{teamEmail}, #{teamPhone}, #{teamCaptain}, #{teamCount}, #{teamCoach}, #{teamRegDate}, #{teamLastLoginDate}, #{teamWin}, #{teamLose})-->
+<!--    </insert>-->
+
+    <!--通过主键修改数据-->
+<!--    <update id="update">-->
+<!--        update matchsys.team-->
+<!--        <set>-->
+<!--            <if test="teamPassword != null and teamPassword != ''">-->
+<!--                team_password = #{teamPassword},-->
+<!--            </if>-->
+<!--            <if test="teamEmail != null and teamEmail != ''">-->
+<!--                team_email = #{teamEmail},-->
+<!--            </if>-->
+<!--            <if test="teamPhone != null and teamPhone != ''">-->
+<!--                team_phone = #{teamPhone},-->
+<!--            </if>-->
+<!--            <if test="teamCaptain != null and teamCaptain != ''">-->
+<!--                team_captain = #{teamCaptain},-->
+<!--            </if>-->
+<!--            <if test="teamCount != null">-->
+<!--                team_count = #{teamCount},-->
+<!--            </if>-->
+<!--            <if test="teamCoach != null and teamCoach != ''">-->
+<!--                team_coach = #{teamCoach},-->
+<!--            </if>-->
+<!--            <if test="teamRegDate != null">-->
+<!--                team_reg_date = #{teamRegDate},-->
+<!--            </if>-->
+<!--            <if test="teamLastLoginDate != null">-->
+<!--                team_last_login_date = #{teamLastLoginDate},-->
+<!--            </if>-->
+<!--            <if test="teamWin != null">-->
+<!--                team_win = #{teamWin},-->
+<!--            </if>-->
+<!--            <if test="teamLose != null">-->
+<!--                team_lose = #{teamLose},-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        where team_name = #{teamName}-->
+<!--    </update>-->
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from matchsys.team where team_name = #{teamName}
+    </delete>
+
+
+     <select id="login" resultMap="TeamMap">
+        select * from matchsys.team where team_name = #{teamName}
+        and  team_password = #{teamPassword}
+    </select>
+
+</mapper>

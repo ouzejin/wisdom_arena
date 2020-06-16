@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="matchsys-eureka-7007" />
+        <module name="common-api" />
+        <module name="matchsys-consumer-80" />
+        <module name="matchsys-provider-8008" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="matchsys-eureka-server" target="10" />
+      <module name="provider-8001" target="10" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

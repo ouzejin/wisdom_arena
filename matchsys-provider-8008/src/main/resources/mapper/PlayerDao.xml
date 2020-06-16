@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.dao.PlayerDao">
+
+    <resultMap type="cn.edu.lingnan.entity.Player" id="PlayerMap">
+        <result property="playerId" column="player_id" jdbcType="INTEGER"/>
+        <result property="playerName" column="player_name" jdbcType="VARCHAR"/>
+        <result property="playerHeight" column="player_height" jdbcType="INTEGER"/>
+        <result property="playerWeight" column="player_weight" jdbcType="INTEGER"/>
+        <result property="playerAveScore" column="player_ave_score" jdbcType="INTEGER"/>
+        <result property="playerAveRebound" column="player_ave_rebound" jdbcType="INTEGER"/>
+        <result property="playerAveAssist" column="player_ave_assist" jdbcType="INTEGER"/>
+        <result property="playerTimes" column="player_times" jdbcType="INTEGER"/>
+        <result property="playerTeam" column="player_team" jdbcType="VARCHAR"/>
+        <result property="playerNumber" column="player_number" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="PlayerMap">
+        select
+          player_id, player_name, player_height, player_weight, player_ave_score, player_ave_rebound, player_ave_assist, player_times, player_team, player_number
+        from matchsys.player
+        where player_id = #{playerId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="PlayerMap">
+        select
+          player_id, player_name, player_height, player_weight, player_ave_score, player_ave_rebound, player_ave_assist, player_times, player_team, player_number
+        from matchsys.player
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="PlayerMap">
+        select * from matchsys.player
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="playerId" useGeneratedKeys="true">
+        insert into matchsys.player(player_name, player_height, player_weight, player_ave_score, player_ave_rebound, player_ave_assist, player_times, player_team, player_number)
+        values (#{playerName}, #{playerHeight}, #{playerWeight}, #{playerAveScore}, #{playerAveRebound}, #{playerAveAssist}, #{playerTimes}, #{playerTeam}, #{playerNumber})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update matchsys.player
+        <set>
+            <if test="playerName != null and playerName != ''">
+                player_name = #{playerName},
+            </if>
+            <if test="playerHeight != null">
+                player_height = #{playerHeight},
+            </if>
+            <if test="playerWeight != null">
+                player_weight = #{playerWeight},
+            </if>
+            <if test="playerAveScore != null">
+                player_ave_score = #{playerAveScore},
+            </if>
+            <if test="playerAveRebound != null">
+                player_ave_rebound = #{playerAveRebound},
+            </if>
+            <if test="playerAveAssist != null">
+                player_ave_assist = #{playerAveAssist},
+            </if>
+            <if test="playerTimes != null">
+                player_times = #{playerTimes},
+            </if>
+            <if test="playerTeam != null and playerTeam != ''">
+                player_team = #{playerTeam},
+            </if>
+            <if test="playerNumber != null">
+                player_number = #{playerNumber},
+            </if>
+        </set>
+        where player_id = #{playerId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from matchsys.player where player_id = #{playerId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.dao.RequestDao">
+
+    <resultMap type="cn.edu.lingnan.entity.Request" id="RequestMap">
+        <result property="requestId" column="request_id" jdbcType="INTEGER"/>
+        <result property="requestTime" column="request_time" jdbcType="TIMESTAMP"/>
+        <result property="requestNameOne" column="request_name_one" jdbcType="VARCHAR"/>
+        <result property="requestNameTwo" column="request_name_two" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="RequestMap">
+        select
+          request_id, request_time, request_name_one, request_name_two
+        from matchsys.request
+        where request_id = #{requestId}
+    </select>
+
+
+    <!--查询单个-->
+    <select id="queryByName" resultMap="RequestMap">
+        select
+          request_id, request_time, request_name_one, request_name_two
+        from matchsys.request
+        where request_name_two = #{requestNameTwo}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="RequestMap">
+        select
+          request_id, request_time, request_name_one, request_name_two
+        from matchsys.request
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="RequestMap">
+        select
+          request_id, request_time, request_name_one, request_name_two
+        from matchsys.request
+        <where>
+            <if test="requestId != null">
+                and request_id = #{requestId}
+            </if>
+            <if test="requestTime != null">
+                and request_time = #{requestTime}
+            </if>
+            <if test="requestNameOne != null and requestNameOne != ''">
+                and request_name_one = #{requestNameOne}
+            </if>
+            <if test="requestNameTwo != null and requestNameTwo != ''">
+                and request_name_two = #{requestNameTwo}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="requestId" useGeneratedKeys="true">
+        insert into matchsys.request(request_time, request_name_one, request_name_two)
+        values (#{requestTime}, #{requestNameOne}, #{requestNameTwo})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update matchsys.request
+        <set>
+            <if test="requestTime != null">
+                request_time = #{requestTime},
+            </if>
+            <if test="requestNameOne != null and requestNameOne != ''">
+                request_name_one = #{requestNameOne},
+            </if>
+            <if test="requestNameTwo != null and requestNameTwo != ''">
+                request_name_two = #{requestNameTwo},
+            </if>
+        </set>
+        where request_id = #{requestId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from matchsys.request where request_id = #{requestId}
+    </delete>
+
+</mapper>

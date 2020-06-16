@@ -1,0 +1,13 @@
+server:
+  port: 7007
+
+spring:
+  application:
+    name: matchsys-eureka-7007
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false #注册到Eureka的注册中心
+    fetch-registry: false #获取注册实例列表

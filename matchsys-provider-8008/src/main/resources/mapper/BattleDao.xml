@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.lingnan.dao.BattleDao">
+
+    <resultMap type="cn.edu.lingnan.entity.Battle" id="BattleMap">
+        <result property="battleId" column="battle_id" jdbcType="INTEGER"/>
+        <result property="battleTime" column="battle_time" jdbcType="VARCHAR"/>
+        <result property="battleNameOne" column="battle_name_one" jdbcType="VARCHAR"/>
+        <result property="battleScoreOne" column="battle_score_one" jdbcType="INTEGER"/>
+        <result property="battleNameTwo" column="battle_name_two" jdbcType="VARCHAR"/>
+        <result property="battleScoreTwo" column="battle_score_two" jdbcType="INTEGER"/>
+        <result property="battleWinTeam" column="battle_win_team" jdbcType="VARCHAR"/>
+        <result property="battleStatus" column="battle_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BattleMap">
+        select
+          battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status
+        from matchsys.battle
+        where battle_id = #{battleId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BattleMap">
+        select
+          battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status
+        from matchsys.battle
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BattleMap">
+        select
+          battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status
+        from matchsys.battle
+        <where>
+            <if test="battleId != null">
+                and battle_id = #{battleId}
+            </if>
+            <if test="battleTime != null and battleTime != ''">
+                and battle_time = #{battleTime}
+            </if>
+            <if test="battleNameOne != null and battleNameOne != ''">
+                and battle_name_one = #{battleNameOne}
+            </if>
+            <if test="battleScoreOne != null">
+                and battle_score_one = #{battleScoreOne}
+            </if>
+            <if test="battleNameTwo != null and battleNameTwo != ''">
+                and battle_name_two = #{battleNameTwo}
+            </if>
+            <if test="battleScoreTwo != null">
+                and battle_score_two = #{battleScoreTwo}
+            </if>
+            <if test="battleWinTeam != null and battleWinTeam != ''">
+                and battle_win_team = #{battleWinTeam}
+            </if>
+            <if test="battleStatus != null">
+                and battle_status = #{battleStatus}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="battleId" useGeneratedKeys="true">
+        insert into matchsys.battle(battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status)
+        values (#{battleTime}, #{battleNameOne}, #{battleScoreOne}, #{battleNameTwo}, #{battleScoreTwo}, #{battleWinTeam}, #{battleStatus})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update matchsys.battle
+        <set>
+            <if test="battleTime != null and battleTime != ''">
+                battle_time = #{battleTime},
+            </if>
+            <if test="battleNameOne != null and battleNameOne != ''">
+                battle_name_one = #{battleNameOne},
+            </if>
+            <if test="battleScoreOne != null">
+                battle_score_one = #{battleScoreOne},
+            </if>
+            <if test="battleNameTwo != null and battleNameTwo != ''">
+                battle_name_two = #{battleNameTwo},
+            </if>
+            <if test="battleScoreTwo != null">
+                battle_score_two = #{battleScoreTwo},
+            </if>
+            <if test="battleWinTeam != null and battleWinTeam != ''">
+                battle_win_team = #{battleWinTeam},
+            </if>
+            <if test="battleStatus != null">
+                battle_status = #{battleStatus},
+            </if>
+        </set>
+        where battle_id = #{battleId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from matchsys.battle where battle_id = #{battleId}
+    </delete>
+
+</mapper>
