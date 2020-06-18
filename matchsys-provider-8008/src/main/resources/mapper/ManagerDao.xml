@@ -23,8 +23,27 @@
     <select id="queryAllByLimit" resultMap="ManagerMap">
         select
           manager_id, manager_name, manager_sex, manager_reg_date, manager_last_login_date, manager_password
-        from matchsys.manager
-        limit #{offset}, #{limit}
+        from manager
+        <where>
+            <if test="bean.managerId != null">
+                and manager_id = #{bean.managerId}
+            </if>
+            <if test="bean.managerName != null and bean.managerName != ''">
+                and manager_name = #{bean.managerName}
+            </if>
+            <if test="bean.managerSex != null and bean.managerSex != ''">
+                and manager_sex = #{bean.managerSex}
+            </if>
+            <if test="bean.managerRegDate != null">
+                and manager_reg_date = #{bean.managerRegDate}
+            </if>
+            <if test="bean.managerLastLoginDate != null">
+                and manager_last_login_date = #{bean.managerLastLoginDate}
+            </if>
+            <if test="bean.managerPassword != null and bean.managerPassword != ''">
+                and manager_password = #{bean.managerPassword}
+            </if>
+        </where>
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -85,7 +104,10 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from matchsys.manager where manager_id = #{managerId}
+        delete from matchsys.manager where manager_id in
+        <foreach collection="ids" item="manager_id" open="(" close=")" separator=",">
+            #{manager_id}
+        </foreach>
     </delete>
 
     <select id="login" resultMap="ManagerMap">

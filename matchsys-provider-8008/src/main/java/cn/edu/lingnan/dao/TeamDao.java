@@ -1,9 +1,12 @@
 package cn.edu.lingnan.dao;
 
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Team;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,12 +22,14 @@ import java.util.List;
 @Repository
 public interface TeamDao extends BaseDao<Team> {
 
-   Team queryById(String teamName);
+   Team queryByName(String teamName);
+
+    boolean deleteByName(@Param("names") List<String> names);
 
     Team login(String teamName, String teamPassword);
 
 
-    List<Team> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit, Team bean);
+    List<Team> queryAllByLimit(@Param("page") Page<Team> page, Team bean);
 
 
     List<Team> queryAll(IPage<Team> page, Team bean);

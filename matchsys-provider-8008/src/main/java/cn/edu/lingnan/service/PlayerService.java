@@ -1,6 +1,8 @@
 package cn.edu.lingnan.service;
 
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Player;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
@@ -27,14 +29,9 @@ public interface PlayerService {
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<Player> queryAllByLimit(int offset, int limit);
+    IPage<Player> queryAllByLimit(int offset, int limit, Player bean);
 
-    /**
-     * 新增数据
-     *
-     * @param player 实例对象
-     * @return 实例对象
-     */
+
 
     List<Player> queryAll();
 
@@ -47,14 +44,9 @@ public interface PlayerService {
      * @param player 实例对象
      * @return 实例对象
      */
-    Player update(Player player);
+    int update(Player player);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param playerId 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer playerId);
+
+    boolean deleteById(List<Integer> ids);
 
 }

@@ -1,12 +1,19 @@
 package cn.edu.lingnan.controller;
 
 import cn.edu.lingnan.entity.Battle;
+import cn.edu.lingnan.entity.common.CommonResult;
 import cn.edu.lingnan.service.BattleService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+
 
 /**
  * (Battle)表控制层
@@ -23,14 +30,42 @@ public class BattleController {
     @Resource
     private BattleService battleService;
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("selectOne")
-    public Battle selectOne(Integer id) {
-        return this.battleService.queryById(id);
+
+    @PostMapping("save")
+
+    public Object save(Battle bean) {
+        boolean result = false;
+        if (bean.getBattleId() != null) {
+            //编辑
+            result = battleService.update(bean) > 0;
+        } else {
+            //添加
+            result = battleService.insert(bean).getBattleId() != null;
+        }
+
+        return result;
+    }
+
+    @GetMapping("queryAll")
+
+    public Object queryAll(Integer page, Integer limit, Battle bean) {
+        System.out.println(bean);
+        CommonResult<Battle> result = new CommonResult<>();
+        IPage<Battle> iPage = battleService.queryAllByLimit(page, limit, bean);
+        result.setCode(0);
+        result.setCount(iPage.getTotal());
+        result.setData(iPage.getRecords());
+        return result;
+    }
+
+
+    @DeleteMapping("/{ids}")
+
+    public boolean deleteById(@PathVariable Integer[] ids) {
+        if (ids == null || ids.length == 0) {
+            return false;
+        }
+       battleService.deleteById(Arrays.asList(ids));
+        return true;
     }
 }

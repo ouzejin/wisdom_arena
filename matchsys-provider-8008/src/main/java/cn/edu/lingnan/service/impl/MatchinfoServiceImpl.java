@@ -1,8 +1,11 @@
 package cn.edu.lingnan.service.impl;
 
-import cn.edu.lingnan.dao.MatchinfoDao;
 import cn.edu.lingnan.entity.Matchinfo;
+import cn.edu.lingnan.dao.MatchinfoDao;
 import cn.edu.lingnan.service.MatchinfoService;
+import cn.edu.lingnan.util.StringUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,22 +22,16 @@ public class MatchinfoServiceImpl implements MatchinfoService {
     @Resource
     private MatchinfoDao matchinfoDao;
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param matchinfoBattleId 主键
-     * @return 实例对象
-     */
     @Override
-    public Matchinfo queryById(Integer matchinfoBattleId) {
-        return this.matchinfoDao.queryById(matchinfoBattleId);
+    public Matchinfo queryById(Integer id) {
+        return this.matchinfoDao.queryById(id);
     }
 
     /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
     @Override
@@ -42,20 +39,30 @@ public class MatchinfoServiceImpl implements MatchinfoService {
         return this.matchinfoDao.queryAllByLimit(offset, limit);
     }
 
-    /**
-     * 新增数据
-
-     * @return 实例对象
-     */
     @Override
-    public List<Matchinfo> queryAll(){
-        return matchinfoDao.queryAll();
+    public IPage<Matchinfo> queryAllByLimit(int offset, int limit, Matchinfo bean) {
+        Page<Matchinfo> page = new Page<>(offset, limit);
+
+        page.setRecords(matchinfoDao.queryAll(page, bean));
+
+        return page;
     }
 
+    /**
+     * 新增数据
+     *
+     * @param matchinfo 实例对象
+     * @return 实例对象
+     */
     @Override
     public Matchinfo insert(Matchinfo matchinfo) {
         this.matchinfoDao.insert(matchinfo);
         return matchinfo;
+    }
+
+    @Override
+    public int insert(List<Matchinfo> list) {
+        return matchinfoDao.insertBatch(list);
     }
 
     /**
@@ -65,19 +72,19 @@ public class MatchinfoServiceImpl implements MatchinfoService {
      * @return 实例对象
      */
     @Override
-    public Matchinfo update(Matchinfo matchinfo) {
-        this.matchinfoDao.update(matchinfo);
-        return this.queryById(matchinfo.getMatchinfoBattleId());
+    public int update(Matchinfo matchinfo) {
+        return this.matchinfoDao.update(matchinfo);
     }
+
 
     /**
      * 通过主键删除数据
      *
-     * @param matchinfoBattleId 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer matchinfoBattleId) {
-        return this.matchinfoDao.deleteById(matchinfoBattleId) > 0;
+    public boolean deleteById(List<Integer> ids) {
+        System.out.println(ids);
+        return matchinfoDao.delete("matchsys.matchinfo", StringUtil.listToString(ids)) > 0;
     }
 }

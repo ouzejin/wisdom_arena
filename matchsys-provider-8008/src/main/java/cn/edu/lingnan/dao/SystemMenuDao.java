@@ -3,6 +3,7 @@ package cn.edu.lingnan.dao;
 import cn.edu.lingnan.entity.SystemMenu;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

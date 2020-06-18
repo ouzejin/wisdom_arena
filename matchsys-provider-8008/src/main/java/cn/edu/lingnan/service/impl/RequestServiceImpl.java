@@ -1,7 +1,7 @@
 package cn.edu.lingnan.service.impl;
 
-import cn.edu.lingnan.dao.RequestDao;
 import cn.edu.lingnan.entity.Request;
+import cn.edu.lingnan.dao.RequestDao;
 import cn.edu.lingnan.service.RequestService;
 import org.springframework.stereotype.Service;
 

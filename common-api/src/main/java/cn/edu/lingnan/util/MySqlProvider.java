@@ -3,12 +3,15 @@ package cn.edu.lingnan.util;
 import cn.edu.lingnan.annotation.Id;
 import cn.edu.lingnan.annotation.Table;
 import org.apache.ibatis.jdbc.SQL;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
+ * @Author shaosen
  * @Description //TODO
  * @Date 9:10 2020/6/3
  */
@@ -22,7 +25,6 @@ public class MySqlProvider {
         String table = getTableName(obj);
         System.out.println(table);
         getMap(obj, map);
-
         return new SQL(){
             {
                 INSERT_INTO(table);

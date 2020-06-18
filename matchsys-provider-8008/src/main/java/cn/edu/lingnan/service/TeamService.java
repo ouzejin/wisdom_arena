@@ -16,7 +16,7 @@ import java.util.List;
 public interface TeamService {
 
 
-    Team queryById(String teamName);
+    Team queryByName(String teamName);
 
     List<Team> queryAll(AdminQuery bean);
 
@@ -25,9 +25,9 @@ public interface TeamService {
 
     Team insert(Team team);
 
-    boolean update(Team team);
+    int update(Team team);
 
-    boolean deleteById(String teamName);
+    boolean deleteByName(List<String> names);
 
     Team login(String teamName, String teamPassword);
 

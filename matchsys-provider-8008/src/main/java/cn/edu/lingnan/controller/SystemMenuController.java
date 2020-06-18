@@ -6,6 +6,7 @@ import cn.edu.lingnan.entity.common.CommonResult;
 import cn.edu.lingnan.service.SystemMenuService;
 import cn.edu.lingnan.util.TreeUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.*;
  * @author makejava
  * @since 2020-06-14 16:01:59
  */
-@Controller
+@RestController
 @RequestMapping("systemMenu")
 public class SystemMenuController {
     /**
@@ -28,13 +29,8 @@ public class SystemMenuController {
     @Resource
     private SystemMenuService systemMenuService;
 
-    @RequestMapping("toList")
-    public String toList() {
-        return "menu/menu_list";
-    }
-
     @GetMapping("menus")
-    @ResponseBody
+
     public Map<String, Object> menus() {
         Map<String, Object> map = new HashMap<>(16);
         Map<String,Object> home = new HashMap<>(16);
@@ -62,35 +58,18 @@ public class SystemMenuController {
     }
 
     @GetMapping("getAuths")
-    @ResponseBody
+
     public Object getAuths() {
         CommonResult<SystemMenu> result = new CommonResult<>();
         List<SystemMenu> list = systemMenuService.queryAll();
         result.setCode(0);
         result.setCount((long) list.size());
         result.setData(list);
-
         return result;
     }
 
-    @GetMapping("/")
-    public String toAdd(Model model) {
-        model.addAttribute("bean", new SystemMenu());
-
-        return "menu/menu_add";
-    }
-
-    @GetMapping("/{id}")
-    public String toEdit(@PathVariable Integer id, Model model) {
-        System.out.println("id:::" + id);
-        SystemMenu bean = systemMenuService.queryById(id);
-        model.addAttribute("bean", bean);
-
-        return "menu/menu_add";
-    }
-
     @PostMapping("save")
-    @ResponseBody
+
     public Object save(SystemMenu bean) {
         boolean result = false;
         //判断账号是否存在
@@ -108,7 +87,7 @@ public class SystemMenuController {
     }
 
     @PostMapping("queryAll")
-    @ResponseBody
+
     public Object queryAll(Integer page, Integer limit, SystemMenu bean) {
         System.out.println(bean);
         CommonResult<SystemMenu> result = new CommonResult<>();
@@ -120,12 +99,11 @@ public class SystemMenuController {
     }
 
     @DeleteMapping("/{ids}")
-    @ResponseBody
+
     public boolean deleteById(@PathVariable Integer[] ids) {
         if (ids == null || ids.length == 0) {
             return false;
         }
-
         return systemMenuService.deleteById(Arrays.asList(ids));
     }
 }

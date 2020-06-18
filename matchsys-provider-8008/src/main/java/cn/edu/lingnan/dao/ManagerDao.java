@@ -1,6 +1,7 @@
 package cn.edu.lingnan.dao;
 
 import cn.edu.lingnan.entity.Manager;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -25,14 +26,8 @@ public interface ManagerDao {
      */
     Manager queryById(Integer managerId);
 
-    /**
-     * 查询指定行数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
-    List<Manager> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    List<Manager> queryAllByLimit(@Param("page") Page<Manager> page, @Param("bean") Manager bean);
 
 
     List<Manager> queryAll();
@@ -53,13 +48,7 @@ public interface ManagerDao {
      */
     int update(Manager manager);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param managerId 主键
-     * @return 影响行数
-     */
-    int deleteById(Integer managerId);
+    int deleteById(@Param("ids") List<Integer> ids);
 
     Manager login(String username, String password);
 

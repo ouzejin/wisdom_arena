@@ -1,6 +1,8 @@
 package cn.edu.lingnan.dao;
 
+import cn.edu.lingnan.entity.Battle;
 import cn.edu.lingnan.entity.Matchinfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,55 +18,15 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface MatchinfoDao {
+public interface MatchinfoDao extends BaseDao<Matchinfo> {
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param matchinfoBattleId 主键
-     * @return 实例对象
-     */
-    Matchinfo queryById(Integer matchinfoBattleId);
 
-    /**
-     * 查询指定行数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
+    Matchinfo queryById(Integer id);
+
     List<Matchinfo> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
+    List<Matchinfo> queryAll(IPage<Matchinfo> page, Matchinfo bean);
 
-    /**
-     * 通过实体作为筛选条件查询
-     *
-     * @return 对象列表
-     */
-     List<Matchinfo> queryAll();
-
-    /**
-     * 新增数据
-     *
-     * @param matchinfo 实例对象
-     * @return 影响行数
-     */
-    int insert(Matchinfo matchinfo);
-
-    /**
-     * 修改数据
-     *
-     * @param matchinfo 实例对象
-     * @return 影响行数
-     */
-    int update(Matchinfo matchinfo);
-
-    /**
-     * 通过主键删除数据
-     *
-     * @param matchinfoBattleId 主键
-     * @return 影响行数
-     */
-    int deleteById(Integer matchinfoBattleId);
-
+    int insertBatch(@Param("list") List<Matchinfo> list);
 }
+
