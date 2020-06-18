@@ -12,7 +12,7 @@ eureka:
     register-with-eureka: true #注册到Eureka的注册中⼼
     fetch-registry: true #获取注册实例列表
     service-url:
-      defaultZone: http://localhost:7003/eureka/ #配置注册中⼼地址
+      defaultZone: http://localhost:7007/eureka/ #配置注册中⼼地址
 info:
   remark: 这是一个消费者，请求页面服务
   author: hahaha

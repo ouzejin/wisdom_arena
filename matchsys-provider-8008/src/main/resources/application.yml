@@ -22,7 +22,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:7003/eureka/
+      defaultZone: http://localhost:7007/eureka/
 info:
   remark: 这是一个提供者，提供各个表的增删改查
   author: lalala
