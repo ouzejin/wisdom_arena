@@ -1,7 +1,10 @@
 package cn.edu.lingnan.entity;
 
-import java.io.Serializable;
+
+import cn.edu.lingnan.annotation.Id;
+import cn.edu.lingnan.annotation.Table;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * (Battle)实体类
@@ -9,9 +12,9 @@ import java.util.Date;
  * @author makejava
  * @since 2020-06-14 17:41:44
  */
+@Table("matchsys.battle")
 public class Battle implements Serializable {
-    private static final long serialVersionUID = -38820092239407247L;
-    
+    @Id
     private Integer battleId;
     
     private Date battleTime;

@@ -13,6 +13,9 @@
         <result property="battleStatus" column="battle_status" jdbcType="INTEGER"/>
     </resultMap>
 
+    <sql id="baseSql">
+          battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status
+    </sql>
     <!--查询单个-->
     <select id="queryById" resultMap="BattleMap">
         select
@@ -21,85 +24,57 @@
         where battle_id = #{battleId}
     </select>
 
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BattleMap">
-        select
-          battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status
+       select
+            <include refid="baseSql"></include>
         from matchsys.battle
         limit #{offset}, #{limit}
     </select>
 
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BattleMap">
         select
-          battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status
+            <include refid="baseSql"></include>
         from matchsys.battle
         <where>
-            <if test="battleId != null">
-                and battle_id = #{battleId}
+            <if test="bean.battleId != null">
+                and battle_id = #{bean.battleId}
             </if>
-            <if test="battleTime != null and battleTime != ''">
-                and battle_time = #{battleTime}
+            <if test="bean.battleTime != null and bean.battleTime != ''">
+                and battle_time = #{bean.battleTime}
             </if>
-            <if test="battleNameOne != null and battleNameOne != ''">
-                and battle_name_one = #{battleNameOne}
+            <if test="bean.battleNameOne != null and bean.battleNameOne != '' ">
+                 and battle_name_one like concat('%', #{bean.battleNameOne}, '%')
+                 or battle_name_two = #{bean.battleNameTwo}
             </if>
-            <if test="battleScoreOne != null">
-                and battle_score_one = #{battleScoreOne}
+            <if test="bean.battleScoreOne != null">
+                and battle_score_one = #{bean.battleScoreOne}
             </if>
-            <if test="battleNameTwo != null and battleNameTwo != ''">
-                and battle_name_two = #{battleNameTwo}
+            <if test="bean.battleNameTwo != null and bean.battleNameTwo != ''">
+                and battle_name_two = #{bean.battleNameTwo}
             </if>
-            <if test="battleScoreTwo != null">
-                and battle_score_two = #{battleScoreTwo}
+            <if test="bean.battleScoreTwo != null">
+                and battle_score_two = #{bean.battleScoreTwo}
             </if>
-            <if test="battleWinTeam != null and battleWinTeam != ''">
-                and battle_win_team = #{battleWinTeam}
+            <if test="bean.battleWinTeam != null and bean.battleWinTeam != ''">
+                and battle_win_team = #{bean.battleWinTeam}
             </if>
-            <if test="battleStatus != null">
-                and battle_status = #{battleStatus}
+            <if test="bean.battleStatus != null">
+                and battle_status = #{bean.battleStatus}
             </if>
         </where>
     </select>
 
-    <!--新增所有列-->
-    <insert id="insert" keyProperty="battleId" useGeneratedKeys="true">
-        insert into matchsys.battle(battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status)
-        values (#{battleTime}, #{battleNameOne}, #{battleScoreOne}, #{battleNameTwo}, #{battleScoreTwo}, #{battleWinTeam}, #{battleStatus})
-    </insert>
+        <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+    insert into matchsys.battle( battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status)
+    values
+    <foreach collection="list" separator="," item="item">
+        (#{item.battleId}, #{item.battleTime}, #{item.battleNameOne}, #{item.battleScoreOne}, #{item.battleNameTwo}, #{item.battleWinTeam}, #{item.battleStatus})
+    </foreach>
+      </insert>
 
-    <!--通过主键修改数据-->
-    <update id="update">
-        update matchsys.battle
-        <set>
-            <if test="battleTime != null and battleTime != ''">
-                battle_time = #{battleTime},
-            </if>
-            <if test="battleNameOne != null and battleNameOne != ''">
-                battle_name_one = #{battleNameOne},
-            </if>
-            <if test="battleScoreOne != null">
-                battle_score_one = #{battleScoreOne},
-            </if>
-            <if test="battleNameTwo != null and battleNameTwo != ''">
-                battle_name_two = #{battleNameTwo},
-            </if>
-            <if test="battleScoreTwo != null">
-                battle_score_two = #{battleScoreTwo},
-            </if>
-            <if test="battleWinTeam != null and battleWinTeam != ''">
-                battle_win_team = #{battleWinTeam},
-            </if>
-            <if test="battleStatus != null">
-                battle_status = #{battleStatus},
-            </if>
-        </set>
-        where battle_id = #{battleId}
-    </update>
-
-    <!--通过主键删除-->
-    <delete id="deleteById">
-        delete from matchsys.battle where battle_id = #{battleId}
-    </delete>
 
 </mapper>

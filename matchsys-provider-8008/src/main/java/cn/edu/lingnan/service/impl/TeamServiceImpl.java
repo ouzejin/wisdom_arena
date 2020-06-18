@@ -1,10 +1,12 @@
 package cn.edu.lingnan.service.impl;
 
-import cn.edu.lingnan.dao.TeamDao;
 import cn.edu.lingnan.entity.AdminQuery;
+import cn.edu.lingnan.entity.Player;
 import cn.edu.lingnan.entity.Team;
+import cn.edu.lingnan.dao.TeamDao;
 import cn.edu.lingnan.service.TeamService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,8 +33,8 @@ public class TeamServiceImpl implements TeamService {
      * @return 实例对象
      */
     @Override
-    public Team queryById(String teamName) {
-        return teamDao.queryById(teamName);
+    public Team queryByName(String teamName) {
+        return teamDao.queryByName(teamName);
     }
 
     @Override
@@ -47,7 +49,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public IPage<Team> queryAllByLimit(int offset, int limit, Team bean) {
-        return null;
+        Page<Team> page = new Page<>(offset,limit);
+
+        System.out.println("impl");
+
+        page.setRecords(teamDao.queryAllByLimit(page,bean));
+        return page;
     }
 
     /**
@@ -77,13 +84,14 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public boolean update(Team team) {
-        return false;
+    public int update(Team team) {
+        return teamDao.update(team);
+
     }
 
     @Override
-    public boolean deleteById(String teamName) {
-        return false;
+    public boolean deleteByName(List<String> names) {
+        return teamDao.deleteByName(names);
     }
 
     /**

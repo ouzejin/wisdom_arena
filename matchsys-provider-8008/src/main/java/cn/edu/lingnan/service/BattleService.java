@@ -1,6 +1,7 @@
 package cn.edu.lingnan.service;
 
 import cn.edu.lingnan.entity.Battle;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
@@ -12,45 +13,18 @@ import java.util.List;
  */
 public interface BattleService {
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param battleId 主键
-     * @return 实例对象
-     */
-    Battle queryById(Integer battleId);
+    Battle queryById(Integer id);
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
     List<Battle> queryAllByLimit(int offset, int limit);
 
-    /**
-     * 新增数据
-     *
-     * @param battle 实例对象
-     * @return 实例对象
-     */
+    IPage<Battle> queryAllByLimit(int offset, int limit, Battle bean);
+
+    int insert(List<Battle> battle);
+
     Battle insert(Battle battle);
 
-    /**
-     * 修改数据
-     *
-     * @param battle 实例对象
-     * @return 实例对象
-     */
-    Battle update(Battle battle);
+    int update(Battle Battle);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param battleId 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer battleId);
+    boolean deleteById(List<Integer> ids);
 
 }

@@ -1,8 +1,11 @@
 package cn.edu.lingnan.service.impl;
 
-import cn.edu.lingnan.dao.PlayerDao;
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Player;
+import cn.edu.lingnan.dao.PlayerDao;
 import cn.edu.lingnan.service.PlayerService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,8 +42,13 @@ public class PlayerServiceImpl implements PlayerService {
      */
 
     @Override
-    public List<Player> queryAllByLimit(int offset, int limit) {
-        return this.playerDao.queryAllByLimit(offset, limit);
+    public IPage<Player> queryAllByLimit(int offset, int limit, Player bean) {
+        Page<Player> page = new Page<>(offset,limit);
+
+        System.out.println("impl");
+
+        page.setRecords(playerDao.queryAllByLimit(page,bean));
+        return page;
     }
 
     /**
@@ -67,19 +75,13 @@ public class PlayerServiceImpl implements PlayerService {
      * @return 实例对象
      */
     @Override
-    public Player update(Player player) {
-        this.playerDao.update(player);
-        return this.queryById(player.getPlayerId());
+    public int update(Player player) {
+        return playerDao.update(player);
     }
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param playerId 主键
-     * @return 是否成功
-     */
+
     @Override
-    public boolean deleteById(Integer playerId) {
-        return this.playerDao.deleteById(playerId) > 0;
+    public boolean deleteById(List<Integer> ids) {
+        return this.playerDao.deleteById(ids) > 0;
     }
 }

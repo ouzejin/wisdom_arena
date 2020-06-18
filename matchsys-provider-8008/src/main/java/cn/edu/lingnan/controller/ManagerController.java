@@ -1,13 +1,19 @@
 package cn.edu.lingnan.controller;
 
 import cn.edu.lingnan.entity.Manager;
+import cn.edu.lingnan.entity.Team;
+import cn.edu.lingnan.entity.common.CommonResult;
 import cn.edu.lingnan.service.ManagerService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Manager)表控制层
@@ -15,8 +21,8 @@ import java.util.List;
  * @author makejava
  * @since 2020-06-12 15:13:32
  */
-@Controller
-@RequestMapping("")
+@RestController
+@RequestMapping("manager")
 public class ManagerController {
     /**
      * 服务对象
@@ -24,11 +30,6 @@ public class ManagerController {
     @Resource
     private ManagerService managerService;
 
-
-    @RequestMapping("Login")
-    public  String toLogin(){
-        return  "login";
-    }
 
     @GetMapping("/selectOne")
     public Manager selectOne(Integer id) {
@@ -41,15 +42,21 @@ public class ManagerController {
 
     }
 
-    @PutMapping("/manager")
-    public Manager update(Manager manager){
-        return  managerService.update(manager);
-
-    }
+//    @PutMapping("/manager")
+//    public Manager update(Manager manager){
+//        return  managerService.update(manager);
+//
+//    }
 
     @DeleteMapping("/manager")
-    public boolean delete(int id){
-        return managerService.deleteById(id);
+    public boolean delete(Integer[] ids){
+        if(ids == null || ids.length == 0){
+            return false;
+        }
+        System.out.println(ids[0]);
+
+        managerService.deleteById(Arrays.asList(ids));
+        return true;
 
     }
 
@@ -59,19 +66,61 @@ public class ManagerController {
 
     }
 
-    @PostMapping("/login")
-    public String login(String username, String password, Model model){
-        Manager manager = managerService.login(username,password);
-        System.out.println(manager);
-        if(manager==null){
-            model.addAttribute("msg","账户或密码错误");
-            return "login";
+//    @PostMapping("/login")
+////    public String login(String username, String password, Model model){
+////        Manager manager = managerService.login(username,password);
+////        System.out.println(manager);
+////        if(manager==null){
+////            model.addAttribute("msg","账户或密码错误");
+////            return "login";
+////        }else{
+////            return "index";
+////        }
+////    }
 
-        }else{
-            return "index";
-        }
+    @PostMapping("queryAll")
 
+    public Object queryAll(Integer page, Integer limit, Manager bean){
+        System.out.println();
+        CommonResult<Manager> result = new CommonResult<>();
+        IPage<Manager> ipage = managerService.queryAllByLimit(page,limit,bean);
+        result.setCode(0);
+        result.setCount(ipage.getTotal());
+        result.setData(ipage.getRecords());
+        return result;
     }
+
+
+    @PostMapping("/save")
+
+    public Object save(Manager bean){
+        System.out.println(bean);
+        boolean result;
+        //判断账号是否存在
+        if(bean.getManagerId() != null){
+            //编辑
+            result = managerService.update(bean) > 0;
+
+        }else {
+            //增加
+            bean.setManagerRegDate(new Date());
+            result = managerService.insert(bean).getManagerId() != null;
+        }
+        return result;
+    }
+
+    @PostMapping("/deleteById")
+
+    public boolean deleteById(Integer[] ids){
+        if(ids == null || ids.length == 0){
+            return false;
+        }
+        System.out.println(ids[0]);
+
+        managerService.deleteById(Arrays.asList(ids));
+        return true;
+    }
+
 
 
 }

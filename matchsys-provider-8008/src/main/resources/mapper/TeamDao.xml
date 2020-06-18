@@ -17,7 +17,7 @@
     </resultMap>
 
     <!--查询单个-->
-    <select id="queryById" resultMap="TeamMap">
+    <select id="queryByName" resultMap="TeamMap">
         select
           team_name, team_password, team_email, team_phone, team_captain, team_count, team_coach, team_reg_date, team_last_login_date, team_win, team_lose
         from matchsys.team
@@ -29,7 +29,41 @@
         select
           team_name, team_password, team_email, team_phone, team_captain, team_count, team_coach, team_reg_date, team_last_login_date, team_win, team_lose
         from matchsys.team
-        limit #{offset}, #{limit}
+        <where>
+            <if test="bean.teamName != null and bean.teamName != ''">
+                and team_name = #{bean.teamName}
+            </if>
+            <if test="bean.teamPassword != null and bean.teamPassword != ''">
+                and team_password = #{bean.teamPassword}
+            </if>
+            <if test="bean.teamEmail != null and bean.teamEmail != ''">
+                and team_email = #{bean.teamEmail}
+            </if>
+            <if test="bean.teamPhone != null and bean.teamPhone != ''">
+                and team_phone = #{bean.teamPhone}
+            </if>
+            <if test="bean.teamCaptain != null and bean.teamCaptain != ''">
+                and team_captain = #{bean.teamCaptain}
+            </if>
+            <if test="bean.teamCount != null">
+                and team_count = #{bean.teamCount}
+            </if>
+            <if test="bean.teamCoach != null and bean.teamCoach != ''">
+                and team_coach = #{bean.teamCoach}
+            </if>
+            <if test="bean.teamRegDate != null">
+                and team_reg_date = #{bean.teamRegDate}
+            </if>
+            <if test="bean.teamLastLoginDate != null">
+                and team_last_login_date = #{bean.teamLastLoginDate}
+            </if>
+            <if test="bean.teamWin != null">
+                and team_win = #{bean.teamWin}
+            </if>
+            <if test="bean.teamLose != null">
+                and team_lose = #{bean.teamLose}
+            </if>
+        </where>
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -119,8 +153,11 @@
 <!--    </update>-->
 
     <!--通过主键删除-->
-    <delete id="deleteById">
-        delete from matchsys.team where team_name = #{teamName}
+    <delete id="deleteByName">
+        delete from matchsys.team where team_name in
+        <foreach collection="names" item="team_name" open="(" close=")" separator=",">
+            #{team_name}
+        </foreach>
     </delete>
 
 

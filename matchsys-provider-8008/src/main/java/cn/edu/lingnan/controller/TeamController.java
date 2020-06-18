@@ -1,18 +1,18 @@
 package cn.edu.lingnan.controller;
 
 
-import cn.edu.lingnan.entity.AdminQuery;
-import cn.edu.lingnan.entity.Battle;
-import cn.edu.lingnan.entity.Request;
-import cn.edu.lingnan.entity.Team;
+import cn.edu.lingnan.entity.*;
+import cn.edu.lingnan.entity.common.CommonResult;
 import cn.edu.lingnan.service.BattleService;
 import cn.edu.lingnan.service.RequestService;
 import cn.edu.lingnan.service.TeamService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ import java.util.List;
  * @author makejava
  * @since 2020-06-12 16:46:34
  */
-@Controller
+@RestController
 @RequestMapping("team")
 public class TeamController {
     /**
@@ -44,7 +44,7 @@ public class TeamController {
      */
     @GetMapping("/team")
     public Team selectOne(String teamName) {
-        return teamService.queryById(teamName);
+        return teamService.queryByName(teamName);
     }
 
     @PostMapping("/team")
@@ -52,12 +52,12 @@ public class TeamController {
         return teamService.insert(team);
 
     }
-
-    @PutMapping("/team")
-    public boolean update(Team team){
-        return  teamService.update(team) ;
-
-    }
+//
+//    @PutMapping("/team")
+//    public boolean update(Team team){
+//        return  teamService.update(team) ;
+//
+//    }
 
 
     @GetMapping("/teams")
@@ -66,12 +66,12 @@ public class TeamController {
     }
 
 
-    @DeleteMapping("/team")
-    public boolean deleteById(@PathVariable String teamName) {
-        return teamService.deleteById(teamName);
-    }
+//    @DeleteMapping("/team")
+//    public boolean deleteByName(@PathVariable String teamName) {
+//        return teamService.deleteById(teamName);
+//    }
 
-    @PostMapping("/login")
+/*    @PostMapping("/login")
     public String login(String teamName, String teamPassword, Model model){
         Team team = teamService.login(teamName,teamPassword);
         System.out.println(team);
@@ -84,7 +84,7 @@ public class TeamController {
             return"index";
         }
 
-    }
+    }*/
 
     @PostMapping("challenge")
     public Request challenge(Request request){
@@ -116,4 +116,46 @@ public class TeamController {
         }
         return true;
     }
+
+
+    @PostMapping("queryAll")
+
+    public Object queryAll(Integer page, Integer limit, Team bean){
+        System.out.println("1111");
+        CommonResult<Team> result = new CommonResult<>();
+        IPage<Team> ipage = teamService.queryAllByLimit(page,limit,bean);
+        result.setCode(0);
+        result.setCount(ipage.getTotal());
+        result.setData(ipage.getRecords());
+        return result;
+    }
+
+
+    @PostMapping("/save")
+
+    public Object save(Team bean){
+        System.out.println(bean);
+        boolean result;
+        //判断账号是否存在
+        if(teamService.queryByName(bean.getTeamName()) != null){
+            //编辑
+            result = teamService.update(bean) > 0;
+        }else {
+
+            result = teamService.insert(bean).getTeamName() != null;
+        }
+        return result;
+    }
+
+    @PostMapping("/deleteByName")
+
+    public boolean deleteById(String[] names){
+        if(names == null || names.length == 0){
+            return false;
+        }
+        System.out.println(names[0]);
+        teamService.deleteByName(Arrays.asList(names));
+        return true;
+    }
+
 }

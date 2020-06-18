@@ -1,5 +1,9 @@
 package cn.edu.lingnan.entity;
 
+
+import cn.edu.lingnan.annotation.Id;
+import cn.edu.lingnan.annotation.Table;
+
 import java.io.Serializable;
 
 /**
@@ -8,9 +12,9 @@ import java.io.Serializable;
  * @author makejava
  * @since 2020-06-13 10:35:34
  */
+@Table("matchsys.matchinfo")
 public class Matchinfo implements Serializable {
-    private static final long serialVersionUID = -35153127031321965L;
-    
+    @Id
     private Integer matchinfoBattleId;
     
     private String matchinfoTeamName;

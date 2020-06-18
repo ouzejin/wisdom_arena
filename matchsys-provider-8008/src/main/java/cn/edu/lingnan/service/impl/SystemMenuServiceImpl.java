@@ -1,7 +1,7 @@
 package cn.edu.lingnan.service.impl;
 
-import cn.edu.lingnan.dao.SystemMenuDao;
 import cn.edu.lingnan.entity.SystemMenu;
+import cn.edu.lingnan.dao.SystemMenuDao;
 import cn.edu.lingnan.service.SystemMenuService;
 import cn.edu.lingnan.util.StringUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;

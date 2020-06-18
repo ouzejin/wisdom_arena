@@ -1,8 +1,10 @@
 package cn.edu.lingnan.service.impl;
 
-import cn.edu.lingnan.dao.ManagerDao;
 import cn.edu.lingnan.entity.Manager;
+import cn.edu.lingnan.dao.ManagerDao;
 import cn.edu.lingnan.service.ManagerService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,8 +40,12 @@ public class ManagerServiceImpl implements ManagerService {
      * @return 对象列表
      */
     @Override
-    public List<Manager> queryAllByLimit(int offset, int limit) {
-        return this.managerDao.queryAllByLimit(offset, limit);
+    public IPage<Manager> queryAllByLimit(int offset, int limit, Manager bean) {
+        Page<Manager> page = new Page<>(offset,limit);
+
+
+        page.setRecords(managerDao.queryAllByLimit(page,bean));
+        return page;
     }
 
     @Override
@@ -67,9 +73,9 @@ public class ManagerServiceImpl implements ManagerService {
      * @return 实例对象
      */
     @Override
-    public Manager update(Manager manager) {
-        this.managerDao.update(manager);
-        return this.queryById(manager.getManagerId());
+    public int update(Manager manager) {
+
+        return  managerDao.update(manager);
     }
 
     /**
@@ -79,7 +85,7 @@ public class ManagerServiceImpl implements ManagerService {
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer managerId) {
+    public boolean deleteById(List<Integer> managerId) {
         return this.managerDao.deleteById(managerId) > 0;
     }
 

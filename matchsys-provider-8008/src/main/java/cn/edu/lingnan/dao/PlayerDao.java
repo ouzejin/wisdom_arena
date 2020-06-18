@@ -1,6 +1,8 @@
 package cn.edu.lingnan.dao;
 
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Player;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -26,22 +28,11 @@ public interface PlayerDao {
      */
     Player queryById(Integer playerId);
 
-    /**
-     * 查询指定行数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
-    List<Player> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    List<Player> queryAllByLimit(@Param("page") Page<Player> page, @Param("bean") Player bean);
 
 
-    /**
-     * 通过实体作为筛选条件查询
-     *
-     * @param player 实例对象
-     * @return 对象列表
-     */
+
     List<Player> queryAll();
 
     /**
@@ -60,12 +51,7 @@ public interface PlayerDao {
      */
     int update(Player player);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param playerId 主键
-     * @return 影响行数
-     */
-    int deleteById(Integer playerId);
+
+    int deleteById(@Param("ids") List<Integer> ids);
 
 }

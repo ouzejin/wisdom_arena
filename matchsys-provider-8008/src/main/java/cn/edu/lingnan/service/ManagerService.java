@@ -1,6 +1,7 @@
 package cn.edu.lingnan.service;
 
 import cn.edu.lingnan.entity.Manager;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface ManagerService {
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<Manager> queryAllByLimit(int offset, int limit);
+    IPage<Manager> queryAllByLimit(int offset, int limit, Manager bean);
 
     List<Manager> queryAll();
 
@@ -45,7 +46,7 @@ public interface ManagerService {
      * @param manager 实例对象
      * @return 实例对象
      */
-    Manager update(Manager manager);
+    int update(Manager manager);
 
     /**
      * 通过主键删除数据
@@ -53,7 +54,7 @@ public interface ManagerService {
      * @param managerId 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer managerId);
+    boolean deleteById(List<Integer> managerId);
 
     Manager login(String username, String password);
 

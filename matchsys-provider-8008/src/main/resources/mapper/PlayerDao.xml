@@ -27,8 +27,39 @@
     <select id="queryAllByLimit" resultMap="PlayerMap">
         select
           player_id, player_name, player_height, player_weight, player_ave_score, player_ave_rebound, player_ave_assist, player_times, player_team, player_number
-        from matchsys.player
-        limit #{offset}, #{limit}
+        from player
+        <where>
+            <if test="bean.playerId != null">
+                and player_id = #{bean.playerId}
+            </if>
+            <if test="bean.playerName != null and bean.playerName != ''">
+                and player_name = #{bean.playerName}
+            </if>
+            <if test="bean.playerHeight != null">
+                and player_height = #{bean.playerHeight}
+            </if>
+            <if test="bean.playerWeight != null">
+                and player_weight = #{bean.playerWeight}
+            </if>
+            <if test="bean.playerAveScore != null">
+                and player_ave_score = #{bean.playerAveScore}
+            </if>
+            <if test="bean.playerAveRebound != null">
+                and player_ave_rebound = #{bean.playerAveRebound}
+            </if>
+            <if test="bean.playerAveAssist != null">
+                and player_ave_assist = #{bean.playerAveAssist},
+            </if>
+            <if test="bean.playerTimes != null">
+                and player_times = #{bean.playerTimes}
+            </if>
+            <if test="bean.playerTeam != null and bean.playerTeam != ''">
+                and player_team = #{bean.playerTeam}
+            </if>
+            <if test="bean.playerNumber != null">
+                and player_number = #{bean.playerNumber}
+            </if>
+        </where>
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -79,7 +110,10 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from matchsys.player where player_id = #{playerId}
+        delete from matchsys.player where player_id in
+        <foreach collection="ids" item="player_id" open="(" close=")" separator=",">
+            #{player_id}
+        </foreach>
     </delete>
 
 </mapper>

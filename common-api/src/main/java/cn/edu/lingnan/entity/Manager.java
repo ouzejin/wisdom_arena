@@ -1,7 +1,7 @@
 package cn.edu.lingnan.entity;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * (Manager)实体类

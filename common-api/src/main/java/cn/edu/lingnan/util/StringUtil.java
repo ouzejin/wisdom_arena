@@ -12,7 +12,7 @@ public class StringUtil extends StringUtils {
 	 * @return
 	 */
 	public static String listToString(List list) {
-		StringBuffer sb = new StringBuffer("id in (");
+		StringBuffer sb = new StringBuffer(" matchinfo_battle_id in (");
 		for (Object item : list) {
 			sb.append("'");
 			sb.append(item);
@@ -23,6 +23,20 @@ public class StringUtil extends StringUtils {
 
 		return sb.toString();
 	}
+
+	public static String twolistToString(List list) {
+		StringBuffer sb = new StringBuffer(" battle_id in (");
+		for (Object item : list) {
+			sb.append("'");
+			sb.append(item);
+			sb.append("',");
+		}
+		sb.deleteCharAt(sb.lastIndexOf(","));
+		sb.append(")");
+
+		return sb.toString();
+	}
+
 
 	/**
 	 * 转换为下划线
@@ -37,6 +51,8 @@ public class StringUtil extends StringUtils {
 			for (int i = 1; i < camelCaseName.length(); i++) {
 				char ch = camelCaseName.charAt(i);
 				if (Character.isUpperCase(ch)) {
+
+
 					result.append("_");
 					result.append(Character.toLowerCase(ch));
 				} else {

@@ -5,10 +5,13 @@ spring:
   application:
     name: matchsys-provider-8008
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost/matchsys?useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.80.128:3306/matchsys?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: root
+
+
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -22,7 +25,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:7003/eureka/
+      defaultZone: http://localhost:7007/eureka/
 info:
   remark: 这是一个提供者，提供各个表的增删改查
   author: lalala
+
