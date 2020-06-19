@@ -30,6 +30,14 @@ public class ManagerController {
     @Resource
     private ManagerService managerService;
 
+    @PostMapping("/login")
+    public Manager login(String username, String password){
+        System.out.println(username+password);
+        Manager manager = managerService.login(username,password);
+        System.out.println(manager);
+        return manager;
+    }
+
 
     @GetMapping("/selectOne")
     public Manager selectOne(Integer id) {
@@ -66,17 +74,7 @@ public class ManagerController {
 
     }
 
-//    @PostMapping("/login")
-////    public String login(String username, String password, Model model){
-////        Manager manager = managerService.login(username,password);
-////        System.out.println(manager);
-////        if(manager==null){
-////            model.addAttribute("msg","账户或密码错误");
-////            return "login";
-////        }else{
-////            return "index";
-////        }
-////    }
+
 
     @PostMapping("queryAll")
 

@@ -30,31 +30,11 @@ public class SystemMenuController {
     private SystemMenuService systemMenuService;
 
     @GetMapping("menus")
+    public List<SystemMenu> menus() {
+        System.out.println("SystemMenuController");
 
-    public Map<String, Object> menus() {
-        Map<String, Object> map = new HashMap<>(16);
-        Map<String,Object> home = new HashMap<>(16);
-        Map<String,Object> logo = new HashMap<>(16);
-        List<SystemMenu> menuList = systemMenuService.queryAll();
-        List<MenuVo> menuInfo = new ArrayList<>();
-        for (SystemMenu e : menuList) {
-            MenuVo menuVO = new MenuVo();
-            menuVO.setId(e.getId());
-            menuVO.setPid(e.getPid());
-            menuVO.setHref(e.getHref());
-            menuVO.setTitle(e.getTitle());
-            menuVO.setIcon(e.getIcon());
-            menuVO.setTarget(e.getTarget());
-            menuInfo.add(menuVO);
-        }
-        map.put("menuInfo", TreeUtil.toTree(menuInfo, 0));
-        home.put("title","首页");
-        home.put("href","/page/welcome-1");//控制器路由,自行定义
-        logo.put("title","后台管理系统");
-        logo.put("image","/static/images/back.jpg");//静态资源文件路径,可使用默认的logo.png
-        map.put("homeInfo", "{title: '首页',href: '/ruge-web-admin/page/welcome.html'}}");
-        map.put("logoInfo", "{title: 'RUGE ADMIN',image: 'images/logo.png'}");
-        return map;
+        return systemMenuService.queryAll();
+
     }
 
     @GetMapping("getAuths")
