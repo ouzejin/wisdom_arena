@@ -4,6 +4,7 @@ import cn.edu.lingnan.annotation.Id;
 import cn.edu.lingnan.annotation.Table;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.util.StringUtils;
+import org.thymeleaf.expression.Maps;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -25,7 +26,8 @@ public class MySqlProvider {
         String table = getTableName(obj);
         System.out.println(table);
         getMap(obj, map);
-        return new SQL(){
+        return new SQL() {
+
             {
                 INSERT_INTO(table);
                 for (String key : map.keySet()) {
@@ -110,7 +112,7 @@ public class MySqlProvider {
      */
     private static String getMap(Object obj, Map<String, String> map) {
         Class c = obj.getClass();
-        Field[] fs = c.getDeclaredFields();//获取所有属性
+        Field[] fs = c.getDeclaredFields(); //获取所有属性
         String idName = null;
         for (Field item : fs) {
             String key = item.getName();

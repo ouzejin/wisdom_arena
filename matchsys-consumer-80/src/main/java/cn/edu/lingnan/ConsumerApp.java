@@ -3,6 +3,8 @@ package cn.edu.lingnan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @program: match-system
@@ -12,6 +14,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  **/
 
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
 public class ConsumerApp {
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApp.class,args);

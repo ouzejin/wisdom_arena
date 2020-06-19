@@ -1,6 +1,8 @@
 server:
   port: 8088
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: matchsys-consumer-80
 
@@ -16,3 +18,5 @@ eureka:
 info:
   remark: 这是一个消费者，请求页面服务
   author: hahaha
+
+

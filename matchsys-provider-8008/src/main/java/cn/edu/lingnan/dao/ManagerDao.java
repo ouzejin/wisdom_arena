@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -50,6 +51,6 @@ public interface ManagerDao {
 
     int deleteById(@Param("ids") List<Integer> ids);
 
-    Manager login(String username, String password);
+    Manager login(@Param(value = "username") String username, @Param(value = "password") String password);
 
 }
