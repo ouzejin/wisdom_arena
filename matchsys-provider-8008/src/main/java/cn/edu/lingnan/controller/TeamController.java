@@ -50,7 +50,6 @@ public class TeamController {
     @PostMapping("/team")
     public Team insert(Team team){
         return teamService.insert(team);
-
     }
 //
 //    @PutMapping("/team")
@@ -119,21 +118,13 @@ public class TeamController {
 
 
     @PostMapping("queryAll")
-
-    public Object queryAll(Integer page, Integer limit, Team bean){
-        System.out.println("1111");
-        CommonResult<Team> result = new CommonResult<>();
-        IPage<Team> ipage = teamService.queryAllByLimit(page,limit,bean);
-        result.setCode(0);
-        result.setCount(ipage.getTotal());
-        result.setData(ipage.getRecords());
-        return result;
+    public IPage<Team> queryAll(Integer page, Integer limit, Team bean){
+        return teamService.queryAllByLimit(page,limit,bean);
     }
 
 
     @PostMapping("/save")
-
-    public Object save(Team bean){
+    public Object save(@RequestBody Team bean){
         System.out.println(bean);
         boolean result;
         //判断账号是否存在
@@ -141,21 +132,14 @@ public class TeamController {
             //编辑
             result = teamService.update(bean) > 0;
         }else {
-
             result = teamService.insert(bean).getTeamName() != null;
         }
         return result;
     }
 
-    @PostMapping("/deleteByName")
-
-    public boolean deleteById(String[] names){
-        if(names == null || names.length == 0){
-            return false;
-        }
-        System.out.println(names[0]);
-        teamService.deleteByName(Arrays.asList(names));
-        return true;
+    @PostMapping("deleteByName")
+    public boolean deleteById(@RequestBody  List<String> names){
+        return teamService.deleteByName(names);
     }
 
 }

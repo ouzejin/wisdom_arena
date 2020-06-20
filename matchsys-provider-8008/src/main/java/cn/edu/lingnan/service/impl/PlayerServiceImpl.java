@@ -44,9 +44,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public IPage<Player> queryAllByLimit(int offset, int limit, Player bean) {
         Page<Player> page = new Page<>(offset,limit);
-
         System.out.println("impl");
-
         page.setRecords(playerDao.queryAllByLimit(page,bean));
         return page;
     }

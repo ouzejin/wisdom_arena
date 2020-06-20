@@ -1,12 +1,10 @@
 package cn.edu.lingnan.dao;
 
-import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Team;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,9 +27,13 @@ public interface TeamDao extends BaseDao<Team> {
     Team login(String teamName, String teamPassword);
 
 
-    List<Team> queryAllByLimit(@Param("page") Page<Team> page, Team bean);
+    List<Team> queryAllByLimit(@Param("page") Page<Team> page, @Param("bean") Team bean);
 
 
     List<Team> queryAll(IPage<Team> page, Team bean);
+
+
+    @Override
+    int insert(Team team);
 
 }

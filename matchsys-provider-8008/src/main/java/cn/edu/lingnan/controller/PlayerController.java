@@ -62,15 +62,9 @@ public class PlayerController {
 
 
     @PostMapping("queryAll")
-
-    public Object queryAll(Integer page, Integer limit, Player bean){
+    public IPage<Player> queryAll(Integer page, Integer limit, Player bean){
         System.out.println("1111");
-        CommonResult<Player> result = new CommonResult<>();
-        IPage<Player> ipage = playerService.queryAllByLimit(page,limit,bean);
-        result.setCode(0);
-        result.setCount(ipage.getTotal());
-        result.setData(ipage.getRecords());
-        return result;
+        return playerService.queryAllByLimit(page,limit,bean);
     }
 
 
@@ -107,7 +101,6 @@ public class PlayerController {
 
 
     @PostMapping("queryAllbyName")
-
     public Object queryAllbyName(Integer page, Integer limit, Player bean){
         System.out.println("qqq");
         CommonResult<Player> result = new CommonResult<>();

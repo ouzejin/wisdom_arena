@@ -1,9 +1,7 @@
 package cn.edu.lingnan.entity;
 
-
 import cn.edu.lingnan.annotation.Id;
 import cn.edu.lingnan.annotation.Table;
-
 import java.util.Date;
 import java.io.Serializable;
 
