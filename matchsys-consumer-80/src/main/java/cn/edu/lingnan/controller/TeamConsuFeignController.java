@@ -70,6 +70,13 @@ public class TeamConsuFeignController {
         return teamFeignService.insert(team);
     }
 
+    @RequestMapping("/toPlayerList")
+    public String toPlayerList(String name,Model model){
+        System.out.println(name);
+        model.addAttribute("name",name);
+        return "team/team_player_list";
+    }
+
 
 }
 

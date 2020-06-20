@@ -76,6 +76,9 @@ public class ManagerController {
 
     @PostMapping("queryAll")
     public IPage<Manager> queryAll(Integer page, Integer limit, Manager bean){
+        System.out.println(page);
+        System.out.println(limit);
+        System.out.println(bean);
         return managerService.queryAllByLimit(page,limit,bean);
     }
 

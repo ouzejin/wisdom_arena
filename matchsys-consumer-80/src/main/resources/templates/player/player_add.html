@@ -21,14 +21,14 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label required">姓名</label>
 			<div class="layui-input-block">
-				<input type="text" name="playerName" lay-verify="required" lay-reqtext="账号不能为空" placeholder="请输入账号"
+				<input type="text" name="playerName" lay-verify="required" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
 				       th:value="*{playerName}" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label required">所属球队</label>
 			<div class="layui-input-block">
-			<input type="password" name="playerTeam" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码"
+			<input type="text" name="playerTeam" lay-verify="required" lay-reqtext="球队不能为空" placeholder="请输入1球队"
 			       th:value="*{playerTeam}" class="layui-input">
 			</div>
 		</div>
@@ -36,7 +36,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label required">球衣背号</label>
 			<div class="layui-input-block">
-				<input type="password" name="playerNumber" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码"
+				<input type="text" name="playerNumber" lay-verify="required" lay-reqtext="球衣号不能为空" placeholder="请输入球衣号"
 					   th:value="*{playerNumber}" class="layui-input">
 			</div>
 

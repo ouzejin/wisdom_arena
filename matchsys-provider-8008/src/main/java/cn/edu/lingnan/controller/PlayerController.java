@@ -68,12 +68,12 @@ public class PlayerController {
     }
 
     @PostMapping("/update")
-    public int update(Player bean){
+    public int update(@RequestBody Player bean){
         return playerService.update(bean);
     }
 
     @PostMapping("/insert")
-    public Player save(Player bean){
+    public Player save(@RequestBody Player bean){
         return playerService.insert(bean);
 
     }

@@ -139,6 +139,8 @@ public class TeamController {
 
     @PostMapping("deleteByName")
     public boolean deleteById(@RequestBody  List<String> names){
+        System.out.println(names.get(0));
+        System.out.println(names.get(1  ));
         return teamService.deleteByName(names);
     }
 

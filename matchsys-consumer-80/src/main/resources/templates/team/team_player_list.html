@@ -114,7 +114,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/team/toAdd',
+                    content: '/player/toAdd',
                     end: function () {
                         table.reload('currentTableId', {
                             page: {
@@ -130,18 +130,18 @@
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId');
                 var data = checkStatus.data;
-                var names = "";
+                var ids = "";
                 for(var i = 0; i < data.length; i++) {
-                    names += data[i].teamName;
+                    ids += data[i].playerId;
                     if (i != data.length - 1) {
                         ids += ","
                     }
                 }
                 // layer.confirm("");
-                layer.confirm("是否删除id为" + names+ "数据?", {icon: 3, title:"提示"}, function(index){
+                layer.confirm("是否删除id为" + ids+ "数据?", {icon: 3, title:"提示"}, function(index){
                     //do something
-                    $.post("/team/deleteByName", {
-                        names: names
+                    $.post("/player/deleteById", {
+                        ids: ids
                     }, function (data) {
                         if (data == true) {
                             table.reload('currentTableId', {
@@ -171,7 +171,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/team/toEdit?name=' + data.teamName,
+                    content: '/player/toEdit?id=' + data.playerId,
                     end: function () {
                         table.reload('currentTableId', {
                             page: {
