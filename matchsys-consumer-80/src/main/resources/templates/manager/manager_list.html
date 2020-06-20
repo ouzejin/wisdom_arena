@@ -19,29 +19,24 @@
                 <form class="layui-form layui-form-pane" action="" method="post">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">球员姓名</label>
+                            <label class="layui-form-label">管理员编号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="playerName" autocomplete="off" class="layui-input">
+                                <input type="text" name="managerId" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">所属球队</label>
+                            <label class="layui-form-label">管理员姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="playerTeam" autocomplete="off" class="layui-input">
+                                <input type="text" name="managerName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">球衣背号</label>
+                            <label class="layui-form-label">性别</label>
                             <div class="layui-input-inline">
-                                <input type="datetime-local" name="playerNumber" autocomplete="off" class="layui-input">
+                                <input type="datetime-local" name="managerSex" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">结束时间</label>
-                            <div class="layui-input-inline">
-                                <input type="datetime-local" name="endTime" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
+
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
@@ -75,20 +70,19 @@
 
         var columns = [
             {type: "checkbox", width: 50},
-            {field: 'playerId', width: 80, title: '球员ID', sort: true},
-            {field: 'playerName', width: 120, title: '球员姓名'},
-            {field: 'playerHeight', width: 120, title: '身高'},
-            {field: 'playerWeight', width: 120, title: '体重'},
-            {field: 'playerTeam', width: 120, title: '所属球队'},
-            {field: 'playerNumber', width: 120, title: '球衣背号'},
+            {field: 'managerId', width: 80, title: '管理员ID', sort: true},
+            {field: 'managerName', width: 120, title: '管理员姓名'},
+            {field: 'managerSex', width: 120, title: '管理员性别'},
+            {field: 'managerPassword', width: 120, title: '密码'},
+            {field: 'managerRegDate', width: 120, title: '注册时间'},
+            {field: 'managerLastLoginDate', title: '最后一次登录时间', minWidth: 150},
 
             {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
         ];
 
-
         table.render({
             elem: '#currentTableId',//指定table的id
-            url: '/player/queryAll',
+            url: '/manager/queryAll',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -129,7 +123,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/player/toAdd',
+                    content: '/manager/toAdd',
                     end: function () {
                         table.reload('currentTableId', {
                             page: {
@@ -147,7 +141,7 @@
                 var data = checkStatus.data;
                 var ids = "";
                 for(var i = 0; i < data.length; i++) {
-                    ids += data[i].playerId;
+                    ids += data[i].managerId;
                     if (i != data.length - 1) {
                         ids += ","
                     }
@@ -155,7 +149,7 @@
                 // layer.confirm("");
                 layer.confirm("是否删除id为" + ids+ "数据?", {icon: 3, title:"提示"}, function(index){
                     //do something
-                    $.post("/player/deleteById", {
+                    $.post("/manager/deleteById", {
                         ids: ids
                     }, function (data) {
                         if (data == true) {
@@ -186,7 +180,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/player/toEdit?id=' + data.playerId,
+                    content: '/manager/toEdit?id=' + data.managerId,
                     end: function () {
                         table.reload('currentTableId', {
                             page: {

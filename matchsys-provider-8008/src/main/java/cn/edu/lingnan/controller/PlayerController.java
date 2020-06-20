@@ -63,44 +63,38 @@ public class PlayerController {
 
     @PostMapping("queryAll")
     public IPage<Player> queryAll(Integer page, Integer limit, Player bean){
-        System.out.println("1111");
         return playerService.queryAllByLimit(page,limit,bean);
+
     }
 
+    @PostMapping("/update")
+    public int update(Player bean){
+        return playerService.update(bean);
+    }
 
-    @PostMapping("/save")
+    @PostMapping("/insert")
+    public Player save(Player bean){
+        return playerService.insert(bean);
 
-    public Object save(Player bean){
-        System.out.println(bean);
-        boolean result;
-        //判断账号是否存在
-        if(bean.getPlayerId() != null){
-            //编辑
-            result = playerService.update(bean) > 0;
-
-        }else {
-
-            result = playerService.insert(bean).getPlayerId() != null;
-        }
-        return result;
     }
 
     @PostMapping("/deleteById")
+    public boolean deleteById(@RequestBody Integer[] ids){
 
-    public boolean deleteById(Integer[] ids){
-        if(ids == null || ids.length == 0){
-            return false;
-        }
-        System.out.println(ids[0]);
+        return playerService.deleteById(Arrays.asList(ids));
+    }
 
-        playerService.deleteById(Arrays.asList(ids));
-        return true;
+    @PostMapping("/queryById")
+    public Player queryById(Integer playerId){
+        System.out.println("queryById"+playerId);
+        return playerService.queryById(playerId);
     }
 
 
 
 
     @PostMapping("queryAllbyName")
+
     public Object queryAllbyName(Integer page, Integer limit, Player bean){
         System.out.println("qqq");
         CommonResult<Player> result = new CommonResult<>();

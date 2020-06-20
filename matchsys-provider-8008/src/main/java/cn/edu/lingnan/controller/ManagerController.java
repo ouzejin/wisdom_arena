@@ -32,9 +32,7 @@ public class ManagerController {
 
     @PostMapping("/login")
     public Manager login(String username, String password){
-        System.out.println(username+password);
         Manager manager = managerService.login(username,password);
-        System.out.println(manager);
         return manager;
     }
 
@@ -77,46 +75,32 @@ public class ManagerController {
 
 
     @PostMapping("queryAll")
-
-    public Object queryAll(Integer page, Integer limit, Manager bean){
-        System.out.println();
-        CommonResult<Manager> result = new CommonResult<>();
-        IPage<Manager> ipage = managerService.queryAllByLimit(page,limit,bean);
-        result.setCode(0);
-        result.setCount(ipage.getTotal());
-        result.setData(ipage.getRecords());
-        return result;
+    public IPage<Manager> queryAll(Integer page, Integer limit, Manager bean){
+        return managerService.queryAllByLimit(page,limit,bean);
     }
 
 
-    @PostMapping("/save")
+    @PostMapping("update")
+    public Integer update(Manager bean){
+        return managerService.update(bean);
+    }
 
-    public Object save(Manager bean){
-        System.out.println(bean);
-        boolean result;
-        //判断账号是否存在
-        if(bean.getManagerId() != null){
-            //编辑
-            result = managerService.update(bean) > 0;
+    @PostMapping("insert")
+    public Manager save(Manager bean){
 
-        }else {
-            //增加
-            bean.setManagerRegDate(new Date());
-            result = managerService.insert(bean).getManagerId() != null;
-        }
-        return result;
+         return managerService.insert(bean);
+
+    }
+
+    @PostMapping("queryById")
+    public Manager queryById(Integer managerId){
+        return managerService.queryById(managerId);
+
     }
 
     @PostMapping("/deleteById")
-
-    public boolean deleteById(Integer[] ids){
-        if(ids == null || ids.length == 0){
-            return false;
-        }
-        System.out.println(ids[0]);
-
-        managerService.deleteById(Arrays.asList(ids));
-        return true;
+    public boolean deleteById(@RequestBody Integer[] ids){
+        return managerService.deleteById(Arrays.asList(ids));
     }
 
 
