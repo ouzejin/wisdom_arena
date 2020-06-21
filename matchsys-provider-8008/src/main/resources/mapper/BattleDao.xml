@@ -21,21 +21,16 @@
         select
           battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status
         from matchsys.battle
-        where battle_id = #{battleId}
+        where battle_id = #{id}
     </select>
 
 
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="BattleMap">
-       select
-            <include refid="baseSql"></include>
-        from matchsys.battle
-        limit #{offset}, #{limit}
-    </select>
+
+
 
 
     <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="BattleMap">
+    <select id="queryAllByLimit" resultMap="BattleMap">
         select
             <include refid="baseSql"></include>
         from matchsys.battle
@@ -68,6 +63,39 @@
         </where>
     </select>
 
+     <select id="queryAll" resultMap="BattleMap">
+        select
+            <include refid="baseSql"></include>
+        from matchsys.battle
+        <where>
+            <if test="battleId != null">
+                and battle_id = #{battleId}
+            </if>
+            <if test="battleTime != null and battleTime != ''">
+                and battle_time = #{battleTime}
+            </if>
+            <if test="battleNameOne != null and battleNameOne != '' ">
+                 and battle_name_one like concat('%', #{battleNameOne}, '%')
+                 or battle_name_two = #{battleNameTwo}
+            </if>
+            <if test="battleScoreOne != null">
+                and battle_score_one = #{battleScoreOne}
+            </if>
+            <if test="battleNameTwo != null and battleNameTwo != ''">
+                and battle_name_two = #{battleNameTwo}
+            </if>
+            <if test="battleScoreTwo != null">
+                and battle_score_two = #{battleScoreTwo}
+            </if>
+            <if test="battleWinTeam != null and battleWinTeam != ''">
+                and battle_win_team = #{battleWinTeam}
+            </if>
+            <if test="battleStatus != null">
+                and battle_status = #{battleStatus}
+            </if>
+        </where>
+    </select>
+
         <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
     insert into matchsys.battle( battle_id, battle_time, battle_name_one, battle_score_one, battle_name_two, battle_score_two, battle_win_team, battle_status)
     values
@@ -75,6 +103,10 @@
         (#{item.battleId}, #{item.battleTime}, #{item.battleNameOne}, #{item.battleScoreOne}, #{item.battleNameTwo}, #{item.battleWinTeam}, #{item.battleStatus})
     </foreach>
       </insert>
+
+    <delete id="deleteById">
+        delete from matchsys.battle where battle_id = #{battleId}
+    </delete>
 
 
 </mapper>

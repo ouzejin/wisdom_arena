@@ -42,8 +42,6 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public IPage<Manager> queryAllByLimit(int offset, int limit, Manager bean) {
         Page<Manager> page = new Page<>(offset,limit);
-
-
         page.setRecords(managerDao.queryAllByLimit(page,bean));
         return page;
     }

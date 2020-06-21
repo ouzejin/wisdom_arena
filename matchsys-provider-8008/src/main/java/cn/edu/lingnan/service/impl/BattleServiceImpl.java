@@ -2,10 +2,12 @@ package cn.edu.lingnan.service.impl;
 
 import cn.edu.lingnan.dao.BattleDao;
 import cn.edu.lingnan.entity.Battle;
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.service.BattleService;
 import cn.edu.lingnan.util.StringUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,15 +30,11 @@ public class BattleServiceImpl implements BattleService {
         return this.battleDao.queryById(id);
     }
 
-    @Override
-    public List<Battle> queryAllByLimit(int offset, int limit) {
-        return this.battleDao.queryAllByLimit(offset,limit);
-    }
 
     @Override
     public IPage<Battle> queryAllByLimit(int offset, int limit, Battle bean) {
         Page<Battle> page = new Page<>(offset, limit);
-        page.setRecords(battleDao.queryAll(page, bean));
+        page.setRecords(battleDao.queryAllByLimit(page, bean));
         return page;
     }
 
@@ -52,12 +50,18 @@ public class BattleServiceImpl implements BattleService {
     }
 
     @Override
+    public List<Battle> queryAll() {
+        return battleDao.queryAll();
+    }
+
+    @Override
     public int update(Battle battle) {
         return battleDao.update(battle);
     }
 
     @Override
     public boolean deleteById(List<Integer> ids) {
-        return battleDao.delete("matchsys.battle", StringUtil.twolistToString(ids)) > 0;
+        return this.battleDao.deleteById(ids);
     }
+
 }

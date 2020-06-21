@@ -77,7 +77,6 @@ public class PlayerConsuFeignController {
             return false;
         }
         System.out.println(ids[0]);
-
         playerFeignService.deleteById(Arrays.asList(ids));
         return true;
     }

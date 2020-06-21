@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>球队经理管理</title>
+    <title>赛后信息填写</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -16,24 +16,18 @@
         <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
             <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="" method="post">
+                <form class="layui-form layui-form-pane" action=" " method="post">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">管理员编号</label>
+                            <label class="layui-form-label">队伍名称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="managerId" autocomplete="off" class="layui-input">
+                                <input type="text" name="matchinfoTeamName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">管理员姓名</label>
+                            <label class="layui-form-label">队员名称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="managerName" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">性别</label>
-                            <div class="layui-input-inline">
-                                <input type="datetime-local" name="managerSex" autocomplete="off" class="layui-input">
+                                <input type="text" name="matchinfoPlayerName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -49,6 +43,7 @@
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+                <button class="layui-btn layui-btn-sm" id="btn_import"> 导入Excel </button>
             </div>
         </script>
 
@@ -63,26 +58,26 @@
 </div>
 <script th:src="@{/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'table'], function () {
+    layui.use(['form', 'table', 'upload'], function () {
         var $ = layui.jquery,
             form = layui.form,
+            upload = layui.upload,
             table = layui.table;//获取当前页面所有的table
 
         var columns = [
             {type: "checkbox", width: 50},
-            {field: 'managerId', width: 80, title: '管理员ID', sort: true},
-            {field: 'managerName', width: 120, title: '管理员姓名'},
-            {field: 'managerSex', width: 120, title: '管理员性别'},
-            {field: 'managerPassword', width: 120, title: '密码'},
-            {field: 'managerRegDate', width: 120, title: '注册时间'},
-            {field: 'managerLastLoginDate', title: '最后一次登录时间', minWidth: 150},
-
+            {field: 'matchinfoBattleId', width: 80, title: 'ID', sort: true},
+            {field: 'matchinfoTeamName', width: 120, title: '效力队伍'},
+            {field: 'matchinfoPlayerName', width: 120, title: '队员姓名'},
+            {field: 'matchinfoScore', width: 120, title: '得分'},
+            {field: 'matchinfoRebound', width: 120, title: '出场次数'},
+            {field: 'matchinfoAssist', title: '助攻', width: 120},
             {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
         ];
 
         table.render({
             elem: '#currentTableId',//指定table的id
-            url: '/manager/queryAll',
+            url: '/matchinfo/queryAll',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -114,7 +109,6 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
-            var data = obj.data;
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
                     title: '添加管理员',
@@ -123,7 +117,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/manager/toAdd',
+                    content: '/matchinfo/toAdd',
                     end: function () {
                         table.reload('currentTableId', {
                             page: {
@@ -141,25 +135,13 @@
                 var data = checkStatus.data;
                 var ids = "";
                 for(var i = 0; i < data.length; i++) {
-                    ids += data[i].managerId;
+                    ids += data[i].matchinfoBattleId;
                     if (i != data.length - 1) {
                         ids += ","
                     }
                 }
-                // layer.confirm("");
                 layer.confirm("是否删除id为" + ids+ "数据?", {icon: 3, title:"提示"}, function(index){
-                    //do something
-                    $.post("/manager/deleteById", {
-                        ids: ids
-                    }, function (data) {
-                        if (data == true) {
-                            table.reload('currentTableId', {
-                                page: {
-                                    curr: 1
-                                }
-                            }, 'data');
-                        }
-                    });
+                    doDelete(obj.data, ids);
                     layer.close(index);
                 });
             }
@@ -167,7 +149,7 @@
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            // ids.push(obj.data.id);
+            //  ids.push(obj.data.matchinfoBattleId);
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
@@ -180,13 +162,13 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/manager/toEdi' +
-                        't?id=' + data.managerId,
+                    content: '/matchinfo/toEdit?id=' + data.matchinfoBattleId,
                     end: function () {
                         table.reload('currentTableId', {
                             page: {
                                 curr: 1
-                            }
+                            },
+                            where: data.field
                         }, 'data');
                     }
                 });
@@ -196,12 +178,39 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    obj.del();
+                     obj.del();
+                    doDelete(data, data.matchinfoBattleId);
                     layer.close(index);
                 });
             }
         });
+
+        upload.render({ //允许上传的文件后缀
+            elem: '#btn_import' //绑定到哪个元素上
+            ,url: '/matchinfo/upload' //改成您自己的上传接口
+            ,accept: 'file' //普通文件
+            ,exts: 'xlsx' //只允许上传压缩文件
+            ,done: function(res){
+                layer.msg('上传成功');
+                console.log(res)
+            }
+        });
+
+        function doDelete(data, ids) {
+            $.post("/matchinfo/deleteById" + ids, {
+                _method: "Post"
+            }, function (result) {
+                if (result == true) {
+                    table.reload('currentTableId', {
+                        page: {
+                            curr: 1
+                        }
+                    }, 'data');
+                }
+            });
+        }
     });
+
 </script>
 
 </body>

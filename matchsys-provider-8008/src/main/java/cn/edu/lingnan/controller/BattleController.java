@@ -1,6 +1,7 @@
 package cn.edu.lingnan.controller;
 
 import cn.edu.lingnan.entity.Battle;
+import cn.edu.lingnan.entity.Battle;
 import cn.edu.lingnan.entity.common.CommonResult;
 import cn.edu.lingnan.service.BattleService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -31,41 +32,36 @@ public class BattleController {
     private BattleService battleService;
 
 
-    @PostMapping("save")
-
-    public Object save(Battle bean) {
-        boolean result = false;
-        if (bean.getBattleId() != null) {
-            //编辑
-            result = battleService.update(bean) > 0;
-        } else {
-            //添加
-            result = battleService.insert(bean).getBattleId() != null;
-        }
-
-        return result;
+    @PostMapping("queryAll")
+    public IPage<Battle> queryAll(Integer page, Integer limit,Battle bean){
+        System.out.println("bean:::"+bean);
+        return battleService.queryAllByLimit(page,limit,bean);
     }
 
-    @GetMapping("queryAll")
+    @PostMapping("update")
+    public Integer update(Battle bean){
+        return battleService.update(bean);
+    }
 
-    public Object queryAll(Integer page, Integer limit, Battle bean) {
-        System.out.println(bean);
-        CommonResult<Battle> result = new CommonResult<>();
-        IPage<Battle> iPage = battleService.queryAllByLimit(page, limit, bean);
-        result.setCode(0);
-        result.setCount(iPage.getTotal());
-        result.setData(iPage.getRecords());
-        return result;
+    @PostMapping("insert")
+    public Battle save(Battle bean){
+        return battleService.insert(bean);
+
+    }
+
+    @PostMapping("queryById")
+    public Battle queryById(Integer id){
+        return battleService.queryById(id);
+
+    }
+
+    @PostMapping ("deleteById")
+    public boolean deleteById(@RequestBody Integer[] ids){
+        System.out.println("controller:ids:::"+ids);
+        System.out.println(battleService.deleteById(Arrays.asList(ids)));
+        return battleService.deleteById(Arrays.asList(ids));
+
     }
 
 
-    @DeleteMapping("/{ids}")
-
-    public boolean deleteById(@PathVariable Integer[] ids) {
-        if (ids == null || ids.length == 0) {
-            return false;
-        }
-       battleService.deleteById(Arrays.asList(ids));
-        return true;
-    }
 }

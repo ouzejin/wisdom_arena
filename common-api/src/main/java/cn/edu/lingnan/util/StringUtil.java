@@ -12,6 +12,7 @@ public class StringUtil extends StringUtils {
 	 * @return
 	 */
 	public static String listToString(List list) {
+		System.out.println("111");
 		StringBuffer sb = new StringBuffer(" matchinfo_battle_id in (");
 		for (Object item : list) {
 			sb.append("'");

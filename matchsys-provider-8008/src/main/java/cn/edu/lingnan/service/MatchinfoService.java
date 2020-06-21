@@ -1,7 +1,9 @@
 package cn.edu.lingnan.service;
 
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Matchinfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,9 +18,8 @@ public interface MatchinfoService {
 
     Matchinfo queryById(Integer id);
 
-    List<Matchinfo> queryAllByLimit(int offset, int limit);
-
     IPage<Matchinfo> queryAllByLimit(int offset, int limit, Matchinfo bean);
+
 
     Matchinfo insert(Matchinfo matchinfo);
 
@@ -26,5 +27,7 @@ public interface MatchinfoService {
 
     int update(Matchinfo matchinfo);
 
-    boolean deleteById(List<Integer> ids);
+    boolean deleteById(@Param("ids") List<Integer> ids);
+
+    List<Matchinfo> queryAll();
 }

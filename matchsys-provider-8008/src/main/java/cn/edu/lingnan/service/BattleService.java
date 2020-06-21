@@ -1,7 +1,9 @@
 package cn.edu.lingnan.service;
 
 import cn.edu.lingnan.entity.Battle;
+import cn.edu.lingnan.entity.Manager;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,9 +17,11 @@ public interface BattleService {
 
     Battle queryById(Integer id);
 
-    List<Battle> queryAllByLimit(int offset, int limit);
+
 
     IPage<Battle> queryAllByLimit(int offset, int limit, Battle bean);
+
+    List<Battle> queryAll();
 
     int insert(List<Battle> battle);
 
@@ -25,6 +29,6 @@ public interface BattleService {
 
     int update(Battle Battle);
 
-    boolean deleteById(List<Integer> ids);
+    boolean deleteById(@Param("ids") List<Integer> ids);
 
 }

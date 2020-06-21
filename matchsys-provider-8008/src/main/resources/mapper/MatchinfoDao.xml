@@ -23,16 +23,10 @@
     where matchinfo_battle_id = #{id}
 </select>
 
-<!--查询指定行数据-->
-<select id="queryAllByLimit" resultMap="MatchinfoMap">
-    select
-        <include refid="baseSql"></include>
-    from matchsys.matchinfo
-    limit #{offset}, #{limit}
-</select>
+
 
 <!--通过实体作为筛选条件查询-->
-<select id="queryAll" resultMap="MatchinfoMap">
+<select id="queryAllByLimit" resultMap="MatchinfoMap">
     select
         <include refid="baseSql"></include>
     from matchsys.matchinfo
@@ -59,6 +53,32 @@
 </select>
 
 
+<select id="queryAll" resultMap="MatchinfoMap">
+    select
+        <include refid="baseSql"></include>
+    from matchsys.matchinfo
+    <where>
+       <if test="matchinfoBattleId != null and matchinfoBattleId != ''">
+    and matchinfo_battle_id = #{matchinfoBattleId}
+       </if>
+       <if test="matchinfoTeamName != null and matchinfoTeamName != ''">
+    and matchinfo_team_name = #{matchinfoTeamName}
+       </if>
+<if test="matchinfoPlayerName != null and matchinfoPlayerName != ''">
+    and matchinfo_player_name = #{matchinfoPlayerName}
+</if>
+<if test="matchinfoScore != null">
+   and matchinfo_score = #{matchinfoScore}
+</if>
+<if test="matchinfoRebound != null">
+   and matchinfo_rebound = #{matchinfoRebound}
+</if>
+<if test="matchinfoAssist != null">
+    and matchinfo_assist = #{matchinfoAssist}
+</if>
+    </where>
+</select>
+
 
 <insert id="insertBatch" keyProperty="matchinfo_battle_id" useGeneratedKeys="true">
     insert into matchsys.matchinfo(matchinfo_battle_id, matchinfo_team_name, matchinfo_player_name, matchinfo_score, matchinfo_rebound, matchinfo_assist)
@@ -67,5 +87,11 @@
         (#{item.matchinfoBattleId}, #{item.matchinfoTeamName}, #{item.matchinfoPlayerName}, #{item.matchinfoScore}, #{item.matchinfoRebound}, #{item.matchinfoAssist})
     </foreach>
 </insert>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from matchsys.matchinfo where matchinfo_battle_id = #{matchinfoBattleId}
+    </delete>
+
 
 </mapper>

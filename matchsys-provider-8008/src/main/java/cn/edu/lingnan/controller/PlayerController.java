@@ -80,7 +80,6 @@ public class PlayerController {
 
     @PostMapping("/deleteById")
     public boolean deleteById(@RequestBody Integer[] ids){
-
         return playerService.deleteById(Arrays.asList(ids));
     }
 

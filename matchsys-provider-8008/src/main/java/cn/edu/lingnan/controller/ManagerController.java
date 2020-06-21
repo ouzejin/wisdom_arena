@@ -87,7 +87,6 @@ public class ManagerController {
 
     @PostMapping("insert")
     public Manager save(Manager bean){
-
          return managerService.insert(bean);
 
     }
@@ -98,7 +97,7 @@ public class ManagerController {
 
     }
 
-    @PostMapping("/deleteById")
+    @DeleteMapping("deleteById")
     public boolean deleteById(@RequestBody Integer[] ids){
         return managerService.deleteById(Arrays.asList(ids));
     }

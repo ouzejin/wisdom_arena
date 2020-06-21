@@ -1,8 +1,10 @@
 package cn.edu.lingnan.dao;
 
 import cn.edu.lingnan.entity.Battle;
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Matchinfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,10 +25,15 @@ public interface MatchinfoDao extends BaseDao<Matchinfo> {
 
     Matchinfo queryById(Integer id);
 
-    List<Matchinfo> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Matchinfo> queryAllByLimit(@Param("page") Page<Matchinfo> page, @Param("bean") Matchinfo bean);
 
-    List<Matchinfo> queryAll(IPage<Matchinfo> page, Matchinfo bean);
+
+    List<Matchinfo> queryAll();
 
     int insertBatch(@Param("list") List<Matchinfo> list);
+
+    boolean deleteById(@Param("ids") List<Integer> ids);
+
+
 }
 

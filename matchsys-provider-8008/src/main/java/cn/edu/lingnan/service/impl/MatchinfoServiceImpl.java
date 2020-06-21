@@ -1,5 +1,6 @@
 package cn.edu.lingnan.service.impl;
 
+import cn.edu.lingnan.entity.Manager;
 import cn.edu.lingnan.entity.Matchinfo;
 import cn.edu.lingnan.dao.MatchinfoDao;
 import cn.edu.lingnan.service.MatchinfoService;
@@ -27,26 +28,15 @@ public class MatchinfoServiceImpl implements MatchinfoService {
         return this.matchinfoDao.queryById(id);
     }
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit  查询条数
-     * @return 对象列表
-     */
-    @Override
-    public List<Matchinfo> queryAllByLimit(int offset, int limit) {
-        return this.matchinfoDao.queryAllByLimit(offset, limit);
-    }
 
     @Override
     public IPage<Matchinfo> queryAllByLimit(int offset, int limit, Matchinfo bean) {
         Page<Matchinfo> page = new Page<>(offset, limit);
-
-        page.setRecords(matchinfoDao.queryAll(page, bean));
-
+        page.setRecords(matchinfoDao.queryAllByLimit(page,bean));
         return page;
     }
+
+
 
     /**
      * 新增数据
@@ -59,6 +49,8 @@ public class MatchinfoServiceImpl implements MatchinfoService {
         this.matchinfoDao.insert(matchinfo);
         return matchinfo;
     }
+
+
 
     @Override
     public int insert(List<Matchinfo> list) {
@@ -86,5 +78,10 @@ public class MatchinfoServiceImpl implements MatchinfoService {
     public boolean deleteById(List<Integer> ids) {
         System.out.println(ids);
         return matchinfoDao.delete("matchsys.matchinfo", StringUtil.listToString(ids)) > 0;
+    }
+
+    @Override
+    public List<Matchinfo> queryAll() {
+        return  matchinfoDao.queryAll();
     }
 }
