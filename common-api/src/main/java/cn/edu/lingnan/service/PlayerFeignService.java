@@ -19,10 +19,10 @@ public interface PlayerFeignService {
     Page<Player> queryAll(@RequestParam("page") Integer page, @RequestParam("limit")Integer limit,@SpringQueryMap Player bean);
 
     @PostMapping("/player/update")
-    Integer update(@SpringQueryMap Player bean);
+    Integer update(@RequestBody Player bean);
 
     @PostMapping("/player/insert")
-    Player insert(@SpringQueryMap Player bean);
+    Player insert(@RequestBody Player bean);
 
     @PostMapping("/player/queryById")
     Player queryById(@RequestParam("playerId") Integer playerId);

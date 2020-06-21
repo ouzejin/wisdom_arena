@@ -108,11 +108,11 @@
         </where>
     </select>
 
-<!--&lt;!&ndash;    新增所有列&ndash;&gt;-->
-<!--    <insert id="insert" keyProperty="teamName" useGeneratedKeys="true">-->
-<!--        insert into matchsys.team(team_password, team_email, team_phone, team_captain, team_count, team_coach, team_reg_date, team_last_login_date, team_win, team_lose)-->
-<!--        values (#{teamPassword}, #{teamEmail}, #{teamPhone}, #{teamCaptain}, #{teamCount}, #{teamCoach}, #{teamRegDate}, #{teamLastLoginDate}, #{teamWin}, #{teamLose})-->
-<!--    </insert>-->
+<!--    新增所有列-->
+    <insert id="insert" keyProperty="teamName" useGeneratedKeys="true">
+        insert into matchsys.team(team_name, team_captain, team_coach, team_password)
+        values ( #{teamName}, #{teamCaptain}, #{teamCoach}, #{teamPassword})
+    </insert>
 
     <!--通过主键修改数据-->
 <!--    <update id="update">-->
@@ -152,6 +152,7 @@
 <!--        where team_name = #{teamName}-->
 <!--    </update>-->
 
+
     <!--通过主键删除-->
     <delete id="deleteByName">
         delete from matchsys.team where team_name in
@@ -159,7 +160,6 @@
             #{team_name}
         </foreach>
     </delete>
-
 
      <select id="login" resultMap="TeamMap">
         select * from matchsys.team where team_name = #{teamName}

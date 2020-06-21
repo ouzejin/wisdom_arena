@@ -6,7 +6,7 @@ spring:
     name: matchsys-provider-8008
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/matchsys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/matchsys?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: root
 
@@ -30,6 +30,3 @@ info:
   remark: 这是一个提供者，提供各个表的增删改查
   author: lalala
 
-logging:
-  level:
-    cn.edu.lingnan.dao : debug

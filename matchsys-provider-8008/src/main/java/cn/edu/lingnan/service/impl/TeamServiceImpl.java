@@ -50,9 +50,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public IPage<Team> queryAllByLimit(int offset, int limit, Team bean) {
         Page<Team> page = new Page<>(offset,limit);
-
         System.out.println("impl");
-
         page.setRecords(teamDao.queryAllByLimit(page,bean));
         return page;
     }
